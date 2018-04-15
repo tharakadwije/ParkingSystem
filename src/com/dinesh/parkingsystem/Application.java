@@ -1,8 +1,7 @@
 package com.dinesh.parkingsystem;
 
 import java.util.Scanner;
-
-import com.dinesh.parkingsystem.textParser.InputHandler;
+import com.dinesh.parkingsystem.textParser.TextParser;
 import com.dinesh.parkingsystem.utill.Util;
 
 public class Application {
@@ -10,7 +9,7 @@ public class Application {
 	
 	 public static void main(String[] args) {
 		    Scanner scanner = new Scanner(System.in);
-
+		    TextParser textParser = new TextParser();
 		    
 		    System.out.println("Welcome to the Parking System..");
 		    System.out.println("Enter 1 to process with FILE MODE.. ");
@@ -42,8 +41,35 @@ public class Application {
 						    	System.out.println();
 						    	
 				    		}else{
-				    			if(Util.isInteger(values[1])) {
-				    				InputHandler.handleInteractiveMode(input1);
+				    			if(values.length==2 && Util.isInteger(values[1])) {
+				    				//create a lot
+				    				textParser.createParkingLot(values[1]);
+				    				
+				    				while(true) {
+				    					
+					    				String parking = scanner.nextLine();
+					    				String [] parkingArray = parking.split(" ");
+					    				if("park".equalsIgnoreCase(parkingArray[0])) {
+					    					//create a parking
+					    					textParser.createParkingDetails(parkingArray[1], parkingArray[2]);
+					    				}else if("leave".equalsIgnoreCase(parking.split(" ")[0])) {
+					    					//create a leave
+					    					textParser.createLeave(parkingArray[1]);
+					    					
+					    				}else if("status".equalsIgnoreCase(parking.split(" ")[0])) {
+					    					//create a leave
+					    					textParser.createStatus();
+					    					
+					    				}else if("registration_numbers_for_cars_with_colour".equalsIgnoreCase(parking.split(" ")[0])) {
+					    					//create a leave
+					    					textParser.searchDetsilsForAllCarsOfColour(parkingArray[1]);;
+					    					
+					    				}else {
+					    					System.out.println("Please try agian");
+									    	System.out.println();
+					    				}
+				    				}
+				    				
 				    			}else {
 				    			    System.out.println("Please try agian with correct slot");
 							    	System.out.println();
@@ -53,24 +79,17 @@ public class Application {
 			    			System.out.println("Please try agian");
 					    	System.out.println();
 			    		}
-			    /*	}else {
-		    			System.out.println("Please try agian");
-				    	System.out.println();
-		    		}*/
 			    	}
 			    }else if("0".equals(mode)) {
 			    	System.out.println("EXIT");
-			    	break;
 			    }else {
 			    	System.out.println("Please try agian");
 			    	System.out.println();
 			    }
 		    	
 		    	
-		    	
 		    }
 		    
-		 
 	 }
 
 }
