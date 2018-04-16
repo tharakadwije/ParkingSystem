@@ -8,12 +8,12 @@ public class Application {
 	 
 	
 	 public static void main(String[] args) {
+		 TextParser textParser = new TextParser();
+		 if(0==args.length) {
 		    Scanner scanner = new Scanner(System.in);
-		    TextParser textParser = new TextParser();
 		    
 		    System.out.println("Welcome to the Parking System..");
-		    System.out.println("Enter 1 to process with FILE MODE.. ");
-		    System.out.println("Enter 2 to process INTERACTIVE MODE.. ");
+		    System.out.println("Enter 1 to process INTERACTIVE MODE.. ");
 		    System.out.println("Enter 0 to close the system.. ");
 		    System.out.println();
 		    
@@ -22,9 +22,6 @@ public class Application {
 			    String mode = scanner.next();
 			    
 			    if("1".equals(mode)) {
-			    	System.out.println("You have selected FILE MODE");	
-			    	System.out.println();
-			    } else if("2".equals(mode)) {
 			    	System.out.println("You have selected INTERACTIVE MODE");
 			    	System.out.println();
 			    	
@@ -64,6 +61,14 @@ public class Application {
 					    					//create a leave
 					    					textParser.searchDetsilsForAllCarsOfColour(parkingArray[1]);;
 					    					
+					    				}else if("slot_numbers_for_cars_with_colour".equalsIgnoreCase(parking.split(" ")[0])) {
+					    					//create a leave
+					    					textParser.searchAllSlotFromColor(parkingArray[1]);;
+					    					
+					    				}else if("slot_number_for_registration_number".equalsIgnoreCase(parking.split(" ")[0])) {
+					    					//create a leave
+					    					textParser.searchAllSlotFromRegNo(parkingArray[1]);;
+					    					
 					    				}else {
 					    					System.out.println("Please try agian");
 									    	System.out.println();
@@ -90,6 +95,9 @@ public class Application {
 		    	
 		    }
 		    
+	 }else if (1==args.length) {
+		 textParser.parseFile(args[0]);
+	 }
 	 }
 
 }

@@ -11,15 +11,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.dinesh.parkingsystem.model.Car;
+import com.dinesh.parkingsystem.utill.Util;
 
 
 public class TextParser {
 
-    private ArrayList<Integer> availableSlotList;
-    private Map<String, Car> mapCar;
-    private Map<String, String> mapRegNumber;
-    private Map<String, ArrayList<String>> mapDetailSlot;
-    private int lotSize = 0;
+	protected ArrayList<Integer> availableSlotList;
+	protected Map<String, Car> mapCar;
+    protected Map<String, String> mapRegNumber;
+    protected Map<String, ArrayList<String>> mapDetailSlot;
+    protected int lotSize = 0;
     
     public void createParkingLot(String lotSize) {
         this.lotSize= Integer.parseInt(lotSize);
@@ -91,7 +92,6 @@ public class TextParser {
     }
 
 	public void createStatus() {
-		// TODO Auto-generated method stub
 	        if (this.lotSize == 0) {
 	            System.out.println("Sorry, parking lot is not created");
 	            System.out.println();
@@ -171,5 +171,69 @@ public class TextParser {
 	        }
 	    }
 	 
+	 public void parseFile(String file) {
+	        File inputFile = new File(file);
+	        try {
+	            BufferedReader br = new BufferedReader(new FileReader(inputFile));
+	            String line;
+	            try {
+	                while ((line = br.readLine()) != null) {
+	                	//
+	                	String[] values = line.split(" ");
+	                	if("create_parking_lot".equalsIgnoreCase(values[0])) {
+					    	
+	                		if(values.length==2 && Util.isInteger(values[1])) {
+			    				//create a lot
+			    				createParkingLot(values[1]);
+			    				
+			    				
+			    				while(true) {
+			    					
+			    					String parking;
+			    					if((parking = br.readLine()) != null) {
+
+			    					String [] parkingArray = parking.split(" ");
+				    				if("park".equalsIgnoreCase(parkingArray[0])) {
+				    					//create a parking
+				    					createParkingDetails(parkingArray[1], parkingArray[2]);
+				    				}else if("leave".equalsIgnoreCase(parking.split(" ")[0])) {
+				    					//create a leave
+				    					createLeave(parkingArray[1]);
+				    					
+				    				}else if("status".equalsIgnoreCase(parking.split(" ")[0])) {
+				    					//create a leave
+				    					createStatus();
+				    					
+				    				}else if("registration_numbers_for_cars_with_colour".equalsIgnoreCase(parking.split(" ")[0])) {
+				    					//create a leave
+				    					searchDetsilsForAllCarsOfColour(parkingArray[1]);;
+				    					
+				    				}else if("slot_numbers_for_cars_with_colour".equalsIgnoreCase(parking.split(" ")[0])) {
+				    					//create a leave
+				    					searchAllSlotFromColor(parkingArray[1]);;
+				    					
+				    				}else if("slot_number_for_registration_number".equalsIgnoreCase(parking.split(" ")[0])) {
+				    					//create a leave
+				    					searchAllSlotFromRegNo(parkingArray[1]);;
+				    					
+				    				}
+			    				 }
+			    				}
+			    				
+			    			}
+			    		}
+	                	
+	                	///
+	                   
+	                }
+	            } catch (IOException ex) {
+	                System.out.println("Error in reading the input file.");
+	                ex.printStackTrace();
+	            }
+	        } catch (FileNotFoundException e) {
+	            System.out.println("File not found in the path specified.");
+	            e.printStackTrace();
+	        }
+	    }
 	 
 }
